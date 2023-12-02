@@ -10,14 +10,8 @@
             <template #title> 必填信息 </template>
             <a-row :gutter="80">
               <a-col :span="8">
-                <a-form-item label="停车场id" field="carParkId" required>
-                  <a-select :loading="loading" placeholder="请输入" allow-search allow-clear @search="handleSelectSearch"
-                    @change="carParkIdChange" :filter-option="false" v-model="formData.carParkId" :disabled="isEdit">
-                    <a-option v-for="item of parkList" :value="item.id">{{
-                      item.name
-                    }}</a-option>
-                  </a-select>
-                  <!-- <a-input v-model="formData.carParkId" allow-clear /> -->
+                <a-form-item label="停车场id" field="carParkId" disabled>
+                  <a-input v-model="formData.carParkId" placeholder="请输入" />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
@@ -30,8 +24,8 @@
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item label="车辆类型" field="carTypeKey" required>
-                  <a-select v-model="formData.carTypeKey" placeholder="请选择" allow-clear>
+                <a-form-item label="车辆类型" field="carTypeKey" disabled>
+                  <a-select v-model="formData.carTypeKey" placeholder="请选择">
                     <a-option :value="item.flagKey" v-for="item in carTypeList" :key="item.id">{{ item.name }}</a-option>
                   </a-select>
                 </a-form-item>
@@ -187,10 +181,31 @@ const selectLoading = ref(false);
 
 const isEdit = ref(false);
 const pointList = ref([]);
+const parkingId = ref('');
+const parkingNmae = ref('');
+const flagKey = ref('');
 
-// 停车场id发生了改变
-const carParkIdChange = (value: any) => {
-  getAccess(value)
+const handleClick = (_parkingId: any = null, _parkingNmae: any = null, _flagKey: any) => {
+  parkingId.value = _parkingId;
+  parkingNmae.value = _parkingNmae;
+  flagKey.value = _flagKey;
+  resetFields();
+  formData.value.carParkId = parkingId.value;
+  formData.value.carTypeKey = flagKey.value;
+
+  getCarType();
+  visible.value = true;
+};
+
+const handleEdit = (row: any = null) => {
+
+  formData.value = cloneDeep(row);
+  // @ts-ignore
+  formData.value.freeTime = row.freeTime/60000;
+  // @ts-ignore
+  formData.value.leaveTimeLimit = row.leaveTimeLimit/60000;
+  getCarType();
+  visible.value = true;
 };
 
 // 获取通道
@@ -209,27 +224,7 @@ const getAccess = async (id: any) => {
     pointList.value = [];
   }
 };
-
-const handleClick = (e: any = null) => {
-  getCarType();
-  if (e?.id) {
-    const newInfo = JSON.parse(JSON.stringify(e));
-    console.log('newInfo', newInfo);
-    newInfo.freeTime = e.freeTime / 60000;
-    newInfo.leaveTimeLimit = e.leaveTimeLimit / 60000;
-    if(newInfo.forbidPassCheckPointIds){
-      newInfo.forbidPassCheckPointIds = e.forbidPassCheckPointIds.split(',');
-    }
-    formData.value = newInfo;
-    getAccess(formData.value.carParkId)
-    isEdit.value = true
-  } else {
-    isEdit.value = false
-  }
-  visible.value = true;
-};
 const resetFields = () => {
-  formData.value.id = '';
   pointList.value = []
   formRef.value.resetFields();
 };
@@ -302,7 +297,7 @@ const onSubmitClick = () => {
   });
 };
 
-defineExpose({ handleClick });
+defineExpose({ handleClick, handleEdit });
 </script>
 
 <style scoped lang="less">

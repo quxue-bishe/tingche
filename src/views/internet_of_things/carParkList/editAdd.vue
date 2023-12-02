@@ -561,11 +561,14 @@
                         label="车牌号颜色判定车辆类型"
                         field="numberPlateColorToCarType"
                       >
-                        <a-input
+                        <a-select
                           v-model="formData.numberPlateColorToCarType"
-                          placeholder="请输入"
+                          placeholder="请选择"
                           allow-clear
-                        ></a-input>
+                        >
+                          <a-option :value="0">否</a-option>
+                          <a-option :value="1">是</a-option>
+                        </a-select>
                       </a-form-item>
                     </a-col>
                     <a-col :span="8">
@@ -720,8 +723,8 @@
   const formData = ref({
     address: '',
     advanceSubscribeTime: '',
-    allowEditUseLog: '',
-    autoIssuedWhitelist: '',
+    allowEditUseLog: 0,
+    autoIssuedWhitelist: 0,
     billingModel: '',
     chargingStationId: '',
     collectionCarparkId: '',
@@ -729,41 +732,41 @@
     currentPrice: '',
     expiredCarFreeTime: '',
     feeUpperLimit: '',
-    forbidGroupFlagSameTimeIn: '',
-    freeTime: '',
+    forbidGroupFlagSameTimeIn: 0,
+    freeTime: 30,
     image: '',
     landline: '',
-    leaveTimeLimit: '',
-    limitParkingSpaceNumber: '',
+    leaveTimeLimit: 15,
+    limitParkingSpaceNumber: 0,
     name: '',
-    numberPlateColorToCarType: '',
-    packageGroupFlagFreeTimeChange: '',
+    numberPlateColorToCarType: 0,
+    packageGroupFlagFreeTimeChange: 0,
     parkingSpaceNumber: '',
     phone: '',
     positionX: '',
     positionY: '',
     provinceId: '',
     score: '',
-    showExpiredCarType: '',
-    showRemarks: '',
+    showExpiredCarType: 0,
+    showRemarks: 0,
     specialFeeExpiredCar: '',
     specialNumberPlate: '',
     startingPrice: '',
     stateOrCityId: '',
-    status: '',
+    status: 0,
     storehouseId: '',
     subscribeFee: '',
     subscribeFreeTime: '',
     subscribeTimeoutFee: '',
     townshipId: '',
-    unitDuration: '',
+    unitDuration: 60,
     usedParkingSpaceNumber: '',
-    visitProcessMode: '',
+    visitProcessMode: 0,
     zoneOrCountyId: '',
-    recovery: '',
-    checkRepeatTime: '',
-    packageExpirationNotice: '',
-    strandedVehiclesDefinedTime: '',
+    recovery: 0,
+    checkRepeatTime: 5,
+    packageExpirationNotice: 0,
+    strandedVehiclesDefinedTime: 30,
     id: '',
     enableStoredCard: 0,
   });

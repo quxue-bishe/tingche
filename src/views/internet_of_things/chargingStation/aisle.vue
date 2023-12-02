@@ -1341,8 +1341,12 @@
       value: 'king_tun',
     },
     {
-      label: '百芯',
-      value: 'bai_xin',
+      label: '答案',
+      value: 'da_an',
+    },
+    {
+      label: '视捷',
+      value: 'shi_jie',
     },
   ];
   const options1 = [

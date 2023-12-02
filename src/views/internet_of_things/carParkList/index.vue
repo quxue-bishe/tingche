@@ -246,6 +246,7 @@
     <editAdd ref="editAddRef" @fetch-data="fetchData" />
     <aisle ref="aisleRef" />
     <chargingRules ref="chargingRulesRef" />
+    <carParkLimit ref="carParkLimitRef" />
     <accountNumber ref="accountNumberRef" />
     <ledList ref="ledListRef" />
     <administratorList ref="administratorListRef" />
@@ -269,6 +270,7 @@
   import editAdd from './editAdd.vue';
   import aisle from './aisle.vue';
   import chargingRules from './chargingRules.vue';
+  import carParkLimit from './carParkLimit.vue';
   import accountNumber from './accountNumber.vue';
   import ledList from './ledList.vue';
   import administratorList from './administratorList.vue';
@@ -294,6 +296,7 @@
   const editAddRef = ref();
   const aisleRef = ref();
   const chargingRulesRef = ref();
+  const carParkLimitRef = ref();
   const accountNumberRef = ref();
   const ledListRef = ref();
   const administratorListRef = ref();
@@ -438,6 +441,9 @@
       case '数据报表':
         onShowDataReport(selectedPark.value);
         break;
+      case '车辆限制':
+        handleCarParkLimit(selectedPark.value);
+        break;
       default:
         console.log('未知功能');
     }
@@ -478,6 +484,9 @@
   };
   const handleChargingRules = (row: any) => {
     chargingRulesRef.value.handleClick(row.id, row.name);
+  };
+  const handleCarParkLimit = (row: any) => {
+    carParkLimitRef.value.handleClick(row.id, row.name);
   };
 
   const handleAisle = (row: any) => {

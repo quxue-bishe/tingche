@@ -15,6 +15,11 @@
         @click="showEdit"
         >新增</a-button
       >
+      <a-popconfirm content="您确定恢复所有默认显示配置吗？" @ok="setDefaultDeviceScreenShow()">
+        <a-button type="primary" status="danger" size="mini"
+          >恢复(使用)默认配置</a-button
+        >
+      </a-popconfirm>
       <a-tabs trigger="click" @change="tabsChange">
         <a-tab-pane
           :title="item.label"
@@ -94,7 +99,72 @@
       <a-form ref="formRef" layout="vertical" :model="formData">
         <a-space direction="vertical" :size="16">
           <a-card class="general-card">
-            <template #title> 必填信息 </template>
+            <template #title> 速填信息 </template>
+            <a-row :gutter="80">
+              <a-col :span="8">
+                <a-form-item
+                  label="内容类型"
+                  field="variableValueType"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-select
+                    v-model="formData.variableValueType"
+                    placeholder="请选择"
+                    allow-clear
+                  >
+                    <a-option
+                      :value="item.value"
+                      v-for="item in variableValueTypeArr"
+                      :key="item.value"
+                      >{{ item.label }}</a-option
+                    >
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="行号"
+                  field="rowNo"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-input
+                    v-model="formData.rowNo"
+                    placeholder="请输入"
+                  ></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="备用内容(兼容非万能语音卡)"
+                  field="reserveContents"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-input
+                    v-model="formData.reserveContents"
+                    placeholder="请输入"
+                  ></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="内容"
+                  field="contents"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-input
+                    v-model="formData.contents"
+                    placeholder="请输入"
+                  ></a-input>
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-card>
+          <a-card class="general-card">
+            <template #title> 默认信息 </template>
             <a-row :gutter="80">
               <a-col :span="8">
                 <a-form-item
@@ -143,7 +213,6 @@
                   <a-select
                     v-model="formData.sourceType"
                     placeholder="请选择"
-                    allow-clear
                   >
                     <a-option
                       :value="item.value"
@@ -154,49 +223,11 @@
                   </a-select>
                 </a-form-item>
               </a-col>
-            </a-row>
-          </a-card>
-          <a-card class="general-card">
-            <template #title> 选填信息 </template>
-            <a-row :gutter="80">
               <a-col :span="8">
-                <a-form-item
-                  label="内容"
-                  field="contents"
-                  validate-trigger="input"
-                >
-                  <a-input
-                    v-model="formData.contents"
-                    placeholder="请输入"
-                  ></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="业务类型"
-                  field="businessType"
-                  validate-trigger="input"
-                >
-                  <a-select
-                    v-model="formData.businessType"
-                    placeholder="请选择"
-                    allow-clear
-                  >
-                    <a-option
-                      :value="item.value"
-                      v-for="item in businessTypeArr"
-                      :key="item.value"
-                      >{{ item.label }}</a-option
-                    >
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item label="字体" field="font" validate-trigger="input">
+                <a-form-item label="字体" field="font" validate-trigger="input" required>
                   <a-select
                     v-model="formData.font"
                     placeholder="请选择"
-                    allow-clear
                   >
                     <a-option
                       :value="item.value"
@@ -209,18 +240,86 @@
               </a-col>
               <a-col :span="8">
                 <a-form-item
+                  label="颜色"
+                  field="color"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-select
+                    v-model="formData.color"
+                    placeholder="请选择"
+                  >
+                    <a-option
+                      :value="item.value"
+                      v-for="item in colorArr"
+                      :key="item.value"
+                      >{{ item.label }}</a-option
+                    >
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="开始时间"
+                  field="startTime"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-date-picker
+                    show-time
+                    format="YYYY-MM-DD HH:mm:ss"
+                    v-model="formData.startTime"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="结束时间"
+                  field="endTime"
+                  validate-trigger="input"
+                  required
+                >
+                  <a-date-picker
+                    show-time
+                    format="YYYY-MM-DD HH:mm:ss"
+                    v-model="formData.endTime"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
                   label="显示方式"
                   field="font"
                   validate-trigger="input"
+                  required
                 >
                   <a-select
                     v-model="formData.displayMode"
                     placeholder="请选择"
-                    allow-clear
                   >
                     <a-option
                       :value="item.value"
                       v-for="item in displayModeArr"
+                      :key="item.value"
+                      >{{ item.label }}</a-option
+                    >
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  label="业务类型"
+                  field="businessType"
+                  validate-trigger="input"
+                >
+                  <a-select
+                    v-model="formData.businessType"
+                    placeholder="请选择"
+                    disabled
+                  >
+                    <a-option
+                      :value="item.value"
+                      v-for="item in businessTypeArr"
                       :key="item.value"
                       >{{ item.label }}</a-option
                     >
@@ -249,6 +348,7 @@
                     v-model="formData.useObjectType"
                     placeholder="请选择"
                     allow-clear
+                    disabled
                   >
                     <a-option
                       :value="item.flagKey"
@@ -257,22 +357,6 @@
                       >{{ item.name }}</a-option
                     >
                   </a-select>
-                  <!-- <a-input
-                    v-model="formData.useObjectType"
-                    placeholder="请输入"
-                  ></a-input> -->
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="行号"
-                  field="rowNo"
-                  validate-trigger="input"
-                >
-                  <a-input
-                    v-model="formData.rowNo"
-                    placeholder="请输入"
-                  ></a-input>
                 </a-form-item>
               </a-col>
               <a-col :span="8">
@@ -289,79 +373,13 @@
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  label="备用内容(兼容非万能语音卡)"
-                  field="reserveContents"
+                  label="设置为模板"
+                  field="template"
                   validate-trigger="input"
                 >
-                  <a-input
-                    v-model="formData.reserveContents"
-                    placeholder="请输入"
-                  ></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="开始时间"
-                  field="startTime"
-                  validate-trigger="input"
-                >
-                  <a-date-picker
-                    show-time
-                    format="YYYY-MM-DD HH:mm:ss"
-                    v-model="formData.startTime"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="结束时间"
-                  field="endTime"
-                  validate-trigger="input"
-                >
-                  <a-date-picker
-                    show-time
-                    format="YYYY-MM-DD HH:mm:ss"
-                    v-model="formData.endTime"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="内容类型"
-                  field="variableValueType"
-                  validate-trigger="input"
-                >
-                  <a-select
-                    v-model="formData.variableValueType"
-                    placeholder="请选择"
-                    allow-clear
-                  >
-                    <a-option
-                      :value="item.value"
-                      v-for="item in variableValueTypeArr"
-                      :key="item.value"
-                      >{{ item.label }}</a-option
-                    >
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  label="颜色"
-                  field="color"
-                  validate-trigger="input"
-                >
-                  <a-select
-                    v-model="formData.color"
-                    placeholder="请选择"
-                    allow-clear
-                  >
-                    <a-option
-                      :value="item.value"
-                      v-for="item in colorArr"
-                      :key="item.value"
-                      >{{ item.label }}</a-option
-                    >
+                  <a-select placeholder="请选择" allow-clear v-model="formData.template">
+                    <a-option :value="0">否</a-option>
+                    <a-option :value="1">是</a-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -384,7 +402,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { ledGet, ledDelete, ledUpdate, ledAdd } from '@/api/internetOfThings';
-  import { getCarTypeListByQuery } from '@/api/park';
+  import { getCarTypeListByQuery, setParkDefaultDeviceScreenShow } from '@/api/park';
   import { Message } from '@arco-design/web-vue';
   import { cloneDeep } from 'lodash';
   import { parseTime } from '@/utils';
@@ -451,6 +469,10 @@
       dataIndex: 'fontSize',
     },
     {
+      title: '模板',
+      dataIndex: 'newTemplate',
+    },
+    {
       title: '操作',
       dataIndex: 'operations',
       slotName: 'operations',
@@ -460,22 +482,23 @@
     return {
       areaId: '',
       businessType: '',
-      color: '',
+      color: 6,
       contents: '',
-      displayMode: '',
+      displayMode: 10,
       endTime: 4852153373000,
-      font: '',
-      keepTime: '',
+      font: 1,
+      keepTime: 0,
       scenes: 1,
-      sourceType: '',
+      sourceType: 0,
       startTime: 1696479802000,
       useObjectType: '',
       variableValue: '',
       variableValueType: '',
       rowNo: '',
-      fontSize: '',
+      fontSize: 1,
       reserveContents: '',
       id: '',
+      template: 0,
     };
   };
   const businessTypeArr = [
@@ -649,10 +672,22 @@
         i.newColor = getColorLabel(i.color);
         i.startTime = formatTime(i.startTime);
         i.endTime = formatTime(i.endTime);
+        i.newTemplate = i.template ? '是' : '否';
       }
       list.value = data;
     } else {
       list.value = [];
+    }
+  };
+  const setDefaultDeviceScreenShow = async () => {
+    const { data, code, total } = await setParkDefaultDeviceScreenShow({
+      params: {
+        id: formData.value.areaId,
+      },
+    });
+    if (code == 10002) {
+      getList();
+    } else {
     }
   };
   const onSubmitClick = () => {

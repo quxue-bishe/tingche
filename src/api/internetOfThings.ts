@@ -249,6 +249,11 @@ export function cfChargingStationUpdate(data: any) {
 export function cfChargingStationAdd(data: any) {
   return axios.post('/internetOfThingsAdmin/cfChargingStation/add', data);
 }
+export function countChargingStationByQuery() {
+  return axios.get<any>(
+    '/internetOfThingsAdmin/cfChargingStation/countChargingStationByQuery'
+  );
+}
 
 // 充电站收费规则
 export function cfChargingStationRulesGet(params: any) {
@@ -338,6 +343,12 @@ export function createTempQrCode(data: any) {
   return axios.post(
     '/ucenterAdmin/cfQrCode/createTempQrCode',
     data
+  );
+}
+
+export function countDeviceByQuery() {
+  return axios.get<any>(
+    '/internetOfThingsAdmin/cfDevice/countDeviceByQuery'
   );
 }
 

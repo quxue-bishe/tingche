@@ -4,28 +4,28 @@
       <a-col :span="6">
         <ChainItem
           :title="$t('multiDAnalysis.card.title.retentionTrends')"
-          quota="retentionTrends"
+          quota="parking"
           chart-type="line"
         />
       </a-col>
       <a-col :span="6">
         <ChainItem
           :title="$t('multiDAnalysis.card.title.userRetention')"
-          quota="userRetention"
+          quota="charging_station"
           chart-type="bar"
         />
       </a-col>
       <a-col :span="6">
         <ChainItem
           :title="$t('multiDAnalysis.card.title.contentConsumptionTrends')"
-          quota="contentConsumptionTrends"
+          quota="community"
           chart-type="line"
         />
       </a-col>
       <a-col :span="6">
         <ChainItem
           :title="$t('multiDAnalysis.card.title.contentConsumption')"
-          quota="contentConsumption"
+          quota="device"
           chart-type="bar"
         />
       </a-col>

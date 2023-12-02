@@ -164,6 +164,10 @@
       dataIndex: 'newGiveFreeTime',
     },
     {
+      title: '模板',
+      dataIndex: 'newTemplate',
+    },
+    {
       title: '操作',
       dataIndex: 'operations',
       slotName: 'operations',
@@ -286,6 +290,7 @@
         i.newForbidIn = { 0: '否', 1: '是' }[i.forbidIn];
         i.newFreeRelease = { 0: '否', 1: '是' }[i.freeRelease];
         i.newGiveFreeTime = { 0: '否', 1: '是' }[i.giveFreeTime];
+        i.newTemplate = { 0: '否', 1: '是' }[i.template];
       }
       state.list = data;
     } else {

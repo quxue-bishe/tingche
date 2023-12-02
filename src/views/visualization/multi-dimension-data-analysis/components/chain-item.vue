@@ -35,6 +35,9 @@
   import useChartOption from '@/hooks/chart-option';
   import Mock from 'mockjs';
   import setupMock, { successResponseWrap } from '@/utils/setup-mock';
+  import { parkCounts } from '@/api/park';
+  import { countChargingStationByQuery, countDeviceByQuery } from '@/api/internetOfThings';
+  import { countVillageByQuery } from '@/api/wisdomCommunity';
 
   const props = defineProps({
     title: {
@@ -97,7 +100,6 @@
     };
   });
   const fetchData = async (params: DataChainGrowth) => {
-    console.log(params);
     const { quota } = params
     const getLineData = () => {
       return {
@@ -106,14 +108,45 @@
           name: quota,
           value: new Array(12)
             .fill(0)
-            .map(() => Mock.Random.natural(1000, 3000)),
+            .map(() => Mock.Random.natural(0, 0)),
         },
       };
     };
+
+    let _count: number = 0;
+
+    //请求对应的数据
+    switch(params.quota){
+      case 'parking':
+        const parkCountsData = await parkCounts();
+        if (parkCountsData.code === 10002) {
+          _count = parkCountsData.data;
+        }
+        break;
+      case 'charging_station':
+        const chargingStationCountsData = await countChargingStationByQuery();
+        if (chargingStationCountsData.code === 10002) {
+          _count = chargingStationCountsData.data;
+        }
+        break;
+      case 'community':
+        const communityCountsData = await countVillageByQuery();
+        if (communityCountsData.code === 10002) {
+          _count = communityCountsData.data;
+        }
+        break;
+      case 'device':
+        const deviceCountsData = await countDeviceByQuery();
+        if (deviceCountsData.code === 10002) {
+          _count = deviceCountsData.data;
+        }
+        break;
+    }
+
     try {
       const { data } = successResponseWrap({
-        count: Mock.Random.natural(1000, 3000),
-        growth: Mock.Random.float(20, 100, 2, 2),
+        count: _count,
+        growth: _count,
         chartData: getLineData(),
       });
       const { chartData: resChartData } = data;

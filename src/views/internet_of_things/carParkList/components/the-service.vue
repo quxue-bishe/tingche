@@ -149,6 +149,15 @@
         '查看停车数据分析，收入报表等，查看该停车场每个渠道的收入情况，停车日报和月报。',
       enable: false,
     },
+    {
+      id: 12,
+      icon: 'user',
+      title: '车辆限制',
+      openTxt: '查看',
+      description:
+        '查看，设置不同类型车辆的进出限制，免停时间，收费模式，通道控制等控制。',
+      enable: false,
+    },
   ];
 
   const clickOptions = (clickType: string) => {

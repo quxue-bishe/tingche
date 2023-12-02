@@ -13,6 +13,9 @@ export function wisdomCommunityAdd(data: any) {
 export function wisdomCommunityUpdate(data: any) {
   return axios.put('/wisdomCommunityAdmin/cfVillage/update', data);
 }
+export function countVillageByQuery() {
+  return axios.get<any>('/wisdomCommunityAdmin/cfVillage/countVillageByQuery');
+}
 
 
 export function getResidentListByQuery(params: any) {

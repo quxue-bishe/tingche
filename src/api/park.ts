@@ -1,8 +1,20 @@
 import axios from 'axios';
 // import { UserState } from '@/store/modules/user/types';
 
-export function parkList() {
-  return axios.get<any>('/carparkAdmin/selectListByCondition');
+export function parkCounts() {
+  return axios.get<any>('/internetOfThingsAdmin/cfCarPark/countParkByQuery');
+}
+export function setParkDefaultDeviceScreenShow(data: any) {
+  return axios.get(
+    '/internetOfThingsAdmin/cfCarPark/setDefaultDeviceScreenShow',
+    data
+  );
+}
+export function setParkDefaultCarParkCarLimit(data: any) {
+  return axios.get(
+    '/internetOfThingsAdmin/cfCarPark/setDefaultCarParkCarLimit',
+    data
+  );
 }
 
 export function deletePack() {
